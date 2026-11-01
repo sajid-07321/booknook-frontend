@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 
-
 const categories = [
   "Fiction",
   "Non-Fiction",
@@ -27,9 +26,7 @@ const categories = [
 export default function AddBookPage() {
   const [successMessage, setSuccessMessage] = useState("");
 
-  const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const form = event.currentTarget;
@@ -43,6 +40,7 @@ export default function AddBookPage() {
       description: formData.get("description"),
       userName: formData.get("userName"),
       userEmail: formData.get("userEmail"),
+      image: formData.get("image") || null,
     };
 
     try {
@@ -61,9 +59,7 @@ export default function AddBookPage() {
       const data = await res.json();
       console.log(data);
 
-      setSuccessMessage(
-        `"${book.title}" has been added to the library.`
-      );
+      setSuccessMessage(`"${book.title}" has been added to the library.`);
 
       form.reset();
     } catch (error) {
@@ -107,8 +103,17 @@ export default function AddBookPage() {
           <div className="grid gap-1.5">
             <Label htmlFor="category" className="text-white">
               Category
-              </Label>
-            <NativeSelect id="category" name="category" defaultValue="Category" required>
+            </Label>
+            <NativeSelect
+              id="category"
+              name="category"
+              defaultValue=""
+              required
+            >
+              <NativeSelectOption value="" disabled>
+                Select a category
+              </NativeSelectOption>
+
               {categories.map((category) => (
                 <NativeSelectOption key={category} value={category}>
                   {category}
@@ -133,9 +138,14 @@ export default function AddBookPage() {
 
           <div className="grid gap-1.5 sm:col-span-2">
             <Label htmlFor="image" className="text-white">
-              Book Image
+              Book Image URL
             </Label>
-            <Input id="image" name="image" type="file" accept="image/*" />
+            <Input
+              id="image"
+              name="image"
+              type="url"
+              placeholder="https://image.url"
+            />
           </div>
 
           <div className="grid gap-1.5 sm:col-span-2">
@@ -149,23 +159,14 @@ export default function AddBookPage() {
             <Label htmlFor="userName" className="text-white">
               User Name
             </Label>
-            <Input
-              id="userName"
-              name="userName"
-              required
-            />
+            <Input id="userName" name="userName" required />
           </div>
 
           <div className="grid gap-1.5">
             <Label htmlFor="userEmail" className="text-white">
               User Email
-              </Label>
-            <Input
-              id="userEmail"
-              name="userEmail"
-              type="email"
-              required
-            />
+            </Label>
+            <Input id="userEmail" name="userEmail" type="email" required />
           </div>
 
           <div className="grid gap-2 sm:col-span-2">
