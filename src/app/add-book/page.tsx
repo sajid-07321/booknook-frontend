@@ -69,8 +69,8 @@ export default function AddBookPage() {
   };
 
   return (
-    <main className="dark min-h-[calc(100vh-3.5rem)] bg-[#0d1211]">
-      <section className="border-b border-white/5 bg-[#121a16]">
+    <main className="dark min-h-[calc(100vh-3.5rem)] bg-[#121616]">
+      <section className="border-b border-white/5 bg-[#1d2521]">
         <div className="mx-auto max-w-7xl px-4 py-10 text-center sm:px-6">
           <h1 className="font-serif text-3xl font-bold tracking-wide text-white sm:text-4xl">
             Add a Book

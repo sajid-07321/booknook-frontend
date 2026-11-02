@@ -18,8 +18,8 @@ const greenButton =
 export function Navbar() {
 
   return (
-    <header className="sticky top-0 z-50 bg-[#0d1211]/95 backdrop-blur">
-      <div className="mx-auto flex h-14 max-w-7xl items-center gap-8 px-4 sm:px-6">
+    <header className="sticky top-0 z-50 bg-black/95 backdrop-blur">
+      <div className="mx-auto flex h-14 max-w-7xl items-center gap-8 px-8 sm:px-6">
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="/images/logo.png"
