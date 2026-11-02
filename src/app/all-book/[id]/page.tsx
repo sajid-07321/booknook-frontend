@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { getBookCover } from "@/lib/books";
 import BorrowBook from "@/components/BorrowBook";
 
-
 type ApiBook = {
   _id?: string;
   id?: string;
@@ -103,9 +102,7 @@ const BookDetailsPage = async (props: PageProps<"/all-book/[id]">) => {
 
           {/* Actions */}
           <div className="mt-6 flex items-center gap-4">
-            
-
-            <BorrowBook BookDetailsPage={BookDetailsPage} />
+            <BorrowBook userName={book.userName} userEmail={book.userEmail} />
 
             <Link
               href="/all-book"

@@ -1,0 +1,117 @@
+
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+const SignUpPage = () => {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-[#121816] px-4 py-10 text-white">
+      <Card className="w-full max-w-md border border-white/10 bg-[#151b19] text-white shadow-2xl">
+        <CardHeader className="space-y-2 text-center">
+          <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/15 text-2xl">
+            ✨
+          </div>
+
+          <CardTitle className="text-2xl font-bold tracking-tight">
+            Create an Account
+          </CardTitle>
+
+          <CardDescription className="text-gray-400">
+            Sign up to get started with your account
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent>
+          <form className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="username" className="text-gray-200">
+                Username
+              </Label>
+
+              <Input
+                id="username"
+                name="username"
+                type="text"
+                placeholder="Enter your username"
+                required
+                className="h-11 border-white/10 bg-[#0b0f0e] text-white placeholder:text-gray-500 focus-visible:ring-emerald-500"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="imageUrl" className="text-gray-200">
+                Profile Image URL
+              </Label>
+
+              <Input
+                id="imageUrl"
+                name="imageUrl"
+                type="url"
+                placeholder="https://example.com/image.jpg"
+                className="h-11 border-white/10 bg-[#0b0f0e] text-white placeholder:text-gray-500 focus-visible:ring-emerald-500"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-gray-200">
+                Email Address
+              </Label>
+
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                required
+                className="h-11 border-white/10 bg-[#0b0f0e] text-white placeholder:text-gray-500 focus-visible:ring-emerald-500"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-gray-200">
+                Password
+              </Label>
+
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Create a password"
+                required
+                className="h-11 border-white/10 bg-[#0b0f0e] text-white placeholder:text-gray-500 focus-visible:ring-emerald-500"
+              />
+            </div>
+
+
+            <Button
+              type="submit"
+              className="h-11 w-full bg-emerald-500 font-semibold text-black hover:bg-emerald-400"
+            >
+              Create Account
+            </Button>
+
+            <p className="text-center text-sm text-gray-400">
+              Already have an account?{" "}
+              <Link
+                href="/sign-in"
+                className="font-medium text-emerald-400 hover:text-emerald-300"
+              >
+                Sign in
+              </Link>
+            </p>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default SignUpPage;
