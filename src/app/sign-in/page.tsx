@@ -1,5 +1,6 @@
-
+"use client"
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,8 +11,27 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { authClient } from "@/lib/auth-client";
 
 const SignInPage = () => {
+
+  const handleSignIn = async (e:React.SubmitEvent<HTMLElement>) => {
+      e.preventDefault()
+      const formData = new FormData(e.target)
+      const user = Object.fromEntries(formData.entries()) as {email: string, password: string} 
+     
+  
+      const {data, error} = await authClient.signIn.email({
+        ...user,
+      })
+      if(data) {
+        redirect('/')
+      }
+      if(error) {
+        console.error(error)
+      }
+    }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#121615] px-4 py-10 text-white">
       <Card className="w-full max-w-md border border-white/10 bg-[#151b19] text-white shadow-2xl">
@@ -30,7 +50,9 @@ const SignInPage = () => {
         </CardHeader>
 
         <CardContent>
-          <form className="space-y-5">
+          <form
+          onSubmit={handleSignIn}
+          className="space-y-5">
             <div className="space-y-2">
               <Label htmlFor="email" className="text-gray-200">
                 Email Address
@@ -88,8 +110,8 @@ const SignInPage = () => {
               variant="outline"
               className="h-11 w-full border-white/15 bg-transparent text-white hover:bg-white/5 hover:text-white"
             >
-              <span className="mr-2 font-bold">G</span>
-              Continue with Google
+              <span className="mr-2 font-bold">Google</span>
+               
             </Button>
 
             <p className="text-center text-sm text-gray-400">

@@ -1,5 +1,6 @@
-
+"use client"
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,8 +11,26 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { authClient } from "@/lib/auth-client";
+
 
 const SignUpPage = () => {
+  const handleSignUp = async (e:React.SubmitEvent<HTMLElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.target)
+    const user = Object.fromEntries(formData.entries()) as {name: string, imageUrl: string, email: string, password: string} 
+   
+
+    const {data, error} = await authClient.signUp.email({
+      ...user,
+    })
+    if(data) {
+      redirect('/')
+    }
+    if(error) {
+      console.error(error)
+    }
+  }
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#121816] px-4 py-10 text-white">
       <Card className="w-full max-w-md border border-white/10 bg-[#151b19] text-white shadow-2xl">
@@ -30,7 +49,9 @@ const SignUpPage = () => {
         </CardHeader>
 
         <CardContent>
-          <form className="space-y-4">
+          <form 
+          onSubmit={handleSignUp}
+          className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="username" className="text-gray-200">
                 Username
@@ -38,9 +59,9 @@ const SignUpPage = () => {
 
               <Input
                 id="username"
-                name="username"
+                name="name"
                 type="text"
-                placeholder="Enter your username"
+                placeholder="Enter your name"
                 required
                 className="h-11 border-white/10 bg-[#0b0f0e] text-white placeholder:text-gray-500 focus-visible:ring-emerald-500"
               />
@@ -97,6 +118,22 @@ const SignUpPage = () => {
             >
               Create Account
             </Button>
+
+              <div className="flex items-center gap-3">
+              <div className="h-px flex-1 bg-white/10" />
+              <span className="text-xs text-gray-500">OR CONTINUE WITH</span>
+              <div className="h-px flex-1 bg-white/10" />
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="h-11 w-full border-white/15 bg-transparent text-white hover:bg-white/5 hover:text-white"
+            >
+              <span className="mr-2 font-bold">Google</span>
+             
+            </Button>
+
 
             <p className="text-center text-sm text-gray-400">
               Already have an account?{" "}
