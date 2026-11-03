@@ -1,9 +1,9 @@
 
 import Image from "next/image";
-import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import DeleteBookButton from "@/components/DeleteBookButton";
+import EditMyBook from "@/components/EditMyBook";
 
 
 type Book = {
@@ -128,12 +128,8 @@ const MyBooksPage = async () => {
 
                   <td className="px-4 py-3">
                     <div className="flex justify-end gap-2">
-                      <Link
-                        href={`/edit-book/${book._id}`}
-                        className="rounded-md bg-[#26352b] px-3 py-1.5 text-xs hover:bg-[#344638]"
-                      >
-                        Edit
-                      </Link>
+
+                        <EditMyBook book={book} />
 
                       <DeleteBookButton bookId={book._id} />
                     </div>
