@@ -50,7 +50,7 @@ export function Banner() {
           Add the books you have finished. Let other readers enjoy them too.
         </p>
         <Link
-          href="/books"
+          href="/all-book"
           className="mt-6 w-fit rounded-lg bg-[#8ee6b0] px-4 py-2.5 text-sm font-medium text-[#0b2416] hover:bg-[#a4ecbf]"
         >
           Browse Books
