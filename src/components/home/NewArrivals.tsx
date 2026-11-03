@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { fetchAllBooks, getBookCover, getBookKey } from "@/lib/books";
 import Link from "next/link";
+import { Button } from "../ui/button";
 
 export async function NewArrivals() {
   const books = await fetchAllBooks();
@@ -9,9 +10,7 @@ export async function NewArrivals() {
     <section className="bg-[#0d100c] px-4 py-12 sm:px-8 lg:px-16 xl:px-24">
       {/* Heading */}
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-white">
-          New Arrivals
-        </h2>
+        <h2 className="text-3xl font-bold text-white">New Arrivals</h2>
 
         <p className="mt-2 text-sm text-neutral-400">
           The latest books added by our readers.
@@ -45,18 +44,14 @@ export async function NewArrivals() {
             {/* Book Information */}
             <div className="flex flex-1 flex-col gap-2 p-4">
               {book.genre && (
-                <p className="text-xs text-neutral-400">
-                  {book.genre}
-                </p>
+                <p className="text-xs text-neutral-400">{book.genre}</p>
               )}
 
               <h3 className="line-clamp-2 text-lg font-bold text-white">
                 {book.title}
               </h3>
 
-              <p className="text-sm text-neutral-400">
-                By {book.author}
-              </p>
+              <p className="text-sm text-neutral-400">By {book.author}</p>
 
               {/* Button */}
               <Link
@@ -70,6 +65,11 @@ export async function NewArrivals() {
             </div>
           </div>
         ))}
+      </div>
+      <div className="mt-10 flex items-center justify-center">
+        <Button>
+          <Link href="/all-book">View All Books</Link>
+        </Button>
       </div>
     </section>
   );
