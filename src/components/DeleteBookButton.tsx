@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 type DeleteBookButtonProps = {
   bookId: string;
@@ -23,9 +24,15 @@ export default function DeleteBookButton({
     setLoading(true);
 
     try {
+      const token = await getTokenFromClient()
       const res = await fetch(
         `http://localhost:5000/my-books/${bookId}`,
-        { method: "DELETE" }
+        { method: "DELETE" ,
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`
+          },
+        }
       );
 
       if (!res.ok) {

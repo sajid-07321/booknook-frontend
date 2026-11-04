@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBookCover } from "@/lib/books";
 import BorrowBook from "@/components/BorrowBook";
+import { getTokenFromServer } from "@/lib/getTokenFromServer";
 
 type ApiBook = {
   _id?: string;
@@ -22,7 +23,13 @@ type ApiBook = {
 
 const BookDetailsPage = async (props: PageProps<"/all-book/[id]">) => {
   const { id } = await props.params;
+
+  const token = await getTokenFromServer()
+  
   const res = await fetch(`http://localhost:5000/all-book/${id}`, {
+    headers: {
+      authorization: `Bearer ${token}`
+    },
     cache: "no-store",
   });
 

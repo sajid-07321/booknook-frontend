@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import DeleteBookButton from "@/components/DeleteBookButton";
 import EditMyBook from "@/components/EditMyBook";
+import { getTokenFromServer } from "@/lib/getTokenFromServer";
 
 
 type Book = {
@@ -33,9 +34,14 @@ const MyBooksPage = async () => {
   let books: Book[] = [];
 
   try {
+    const token = await getTokenFromServer()
     const res = await fetch(
-      `http://localhost:5000/my-books/${encodeURIComponent(email)}`,
-      { cache: "no-store" }
+      `http://localhost:5000/my-books/${email}`,{ 
+         headers: {
+          authorization: `Bearer ${token}`
+         },
+         cache: "no-store",
+      }
     );
 
     if (res.ok) {

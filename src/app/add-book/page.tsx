@@ -11,6 +11,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 import { authClient } from "@/lib/auth-client";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 const categories = [
   "Fiction",
@@ -51,10 +52,12 @@ export default function AddBookPage() {
     };
 
     try {
+      const token = await getTokenFromClient()
       const res = await fetch("http://localhost:5000/add-book", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${token}`
         },
         body: JSON.stringify(book),
       });
@@ -63,8 +66,8 @@ export default function AddBookPage() {
         throw new Error("Failed to add book");
       }
 
-      const data = await res.json();
-      console.log(data);
+      const result = await res.json();
+      console.log(result);
 
       setSuccessMessage(`"${book.title}" has been added to the library.`);
 

@@ -18,6 +18,7 @@ import {
   NativeSelectOption,
 } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 const categories = [
   "Fiction",
@@ -75,12 +76,14 @@ const EditMyBook = ({ book }: EditMyBookProps) => {
     };
 
     try {
+      const token = await getTokenFromClient()
       const res = await fetch(
         `http://localhost:5000/my-books/${book._id}`,
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            authorization: `Bearer ${token}`
           },
           body: JSON.stringify(updatedBook),
         }

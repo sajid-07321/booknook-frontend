@@ -73,13 +73,6 @@ const SignInPage = () => {
                 <Label htmlFor="password" className="text-gray-200">
                   Password
                 </Label>
-
-                <Link
-                  href="/forgot-password"
-                  className="text-sm text-emerald-400 hover:text-emerald-300"
-                >
-                  Forgot password?
-                </Link>
               </div>
 
               <Input
