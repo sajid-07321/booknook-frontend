@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getBookCover } from "@/lib/books";
 import BorrowBook from "@/components/BorrowBook";
 import { getTokenFromServer } from "@/lib/getTokenFromServer";
 
@@ -21,14 +20,16 @@ type ApiBook = {
   image?: string;
 };
 
-const BookDetailsPage = async (props: PageProps<"/all-book/[id]">) => {
+const BookDetailsPage = async (
+  props: PageProps<"/all-book/[id]">
+) => {
   const { id } = await props.params;
 
-  const token = await getTokenFromServer()
-  
+  const token = await getTokenFromServer();
+
   const res = await fetch(`http://localhost:5000/all-book/${id}`, {
     headers: {
-      authorization: `Bearer ${token}`
+      authorization: `Bearer ${token}`,
     },
     cache: "no-store",
   });
@@ -45,7 +46,7 @@ const BookDetailsPage = async (props: PageProps<"/all-book/[id]">) => {
   }
 
   const genre = book.genre ?? book.category;
-  const cover = getBookCover(book);
+  const cover = book.coverImage ?? book.cover ?? book.image;
 
   return (
     <section className="min-h-[calc(100vh-56px)] bg-[#141a13] px-4 py-12 sm:px-8 lg:px-16 xl:px-24">
@@ -91,16 +92,21 @@ const BookDetailsPage = async (props: PageProps<"/all-book/[id]">) => {
           <div className="mt-6 grid max-w-xl grid-cols-2 gap-6 rounded-xl border border-white/5 bg-[#1c231a] p-5">
             <div>
               <p className="text-xs text-neutral-400">Added by</p>
+
               <p className="mt-1 text-sm font-semibold text-white">
                 {book.userName ?? "Unknown"}
               </p>
+
               {book.userEmail && (
-                <p className="text-xs text-neutral-400">{book.userEmail}</p>
+                <p className="text-xs text-neutral-400">
+                  {book.userEmail}
+                </p>
               )}
             </div>
 
             <div>
               <p className="text-xs text-neutral-400">Copies left</p>
+
               <p className="mt-1 text-sm font-semibold text-white">
                 {book.totalCopies ?? 0}
               </p>
@@ -109,7 +115,10 @@ const BookDetailsPage = async (props: PageProps<"/all-book/[id]">) => {
 
           {/* Actions */}
           <div className="mt-6 flex items-center gap-4">
-            <BorrowBook userName={book.userName} userEmail={book.userEmail} />
+            <BorrowBook
+              userName={book.userName}
+              userEmail={book.userEmail}
+            />
 
             <Link
               href="/all-book"

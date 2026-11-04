@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { authClient } from "@/lib/auth-client";
 import { getTokenFromClient } from "@/lib/getTokenFromClient";
+
 
 const categories = [
   "Fiction",
@@ -27,6 +29,7 @@ const categories = [
 ];
 
 export default function AddBookPage() {
+  const router = useRouter();
   const { data: session } = authClient.useSession();
   const user = session?.user;
 
@@ -70,7 +73,10 @@ export default function AddBookPage() {
       console.log(result);
 
       setSuccessMessage(`"${book.title}" has been added to the library.`);
-
+     
+      setTimeout(() => {
+  router.push("/all-book");
+}, 1500);
       
     } catch (error) {
       console.error(error);

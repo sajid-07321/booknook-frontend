@@ -32,6 +32,14 @@ const SignInPage = () => {
       }
     }
 
+    const handleGoogleSignIn = async () => {
+      const data = await authClient.signIn.social({
+    provider: "google",
+  });
+  console.log(data);
+  
+    }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#121615] px-4 py-10 text-white">
       <Card className="w-full max-w-md border border-white/10 bg-[#151b19] text-white shadow-2xl">
@@ -99,6 +107,7 @@ const SignInPage = () => {
             </div>
 
             <Button
+            onClick={handleGoogleSignIn}
               type="button"
               variant="outline"
               className="h-11 w-full border-white/15 bg-transparent text-white hover:bg-white/5 hover:text-white"

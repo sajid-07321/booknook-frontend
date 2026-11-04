@@ -15,6 +15,13 @@ export const auth = betterAuth({
     enabled: true,
   },
 
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_SECRET_KEY as string
+    }
+  },
+
   plugins: [
     jwt({
       sessionCookieCache: true,

@@ -1,14 +1,33 @@
-
 import Image from "next/image";
-import {
-  fetchAllBooks,
-  getBookCover,
-  getBookKey,
-  ALL_BOOKS_URL,
-} from "@/lib/books";
+
+type Book = {
+  _id?: string;
+  id?: string;
+  title: string;
+  author: string;
+  genre?: string;
+  coverImage?: string;
+  cover?: string;
+  image?: string;
+};
+
+const ALL_BOOKS_URL = "http://localhost:5000/all-book";
 
 export default async function AllBookPage() {
-  const books = await fetchAllBooks();
+  let books: Book[] = [];
+
+  try {
+    const res = await fetch(ALL_BOOKS_URL, {
+      cache: "no-store",
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      books = Array.isArray(data) ? data : [];
+    }
+  } catch (error) {
+    console.error("Failed to fetch books:", error);
+  }
 
   return (
     <>
@@ -28,58 +47,64 @@ export default async function AllBookPage() {
         <div className="mx-auto max-w-7xl">
           {books.length === 0 ? (
             <p className="py-16 text-center text-neutral-400">
-              No books found. Check API: {ALL_BOOKS_URL}
+              No books found.
             </p>
           ) : (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-              {books.map((book) => (
-                <div
-                  key={getBookKey(book)}
-                  className="flex h-full flex-col overflow-hidden rounded-lg bg-[#161b16]"
-                >
-                  {/* Book Image */}
-                  <div className="relative aspect-[3/4] bg-[#22281f]">
-                    {getBookCover(book) ? (
-                      <Image
-                        src={getBookCover(book)!}
-                        alt={book.title}
-                        fill
-                        sizes="(max-width: 640px) 100vw, 20vw"
-                        className="object-cover"
-                      />
-                    ) : (
-                      <p className="flex h-full items-center justify-center text-sm text-neutral-400">
-                        No cover available
-                      </p>
-                    )}
-                  </div>
+              {books.map((book) => {
+                const bookKey = book._id ?? book.id ?? book.title;
+                const bookCover =
+                  book.coverImage ?? book.cover ?? book.image;
 
-                  {/* Book Information */}
-                  <div className="flex flex-1 flex-col gap-2 p-4">
-                    {book.genre && (
+                return (
+                  <div
+                    key={bookKey}
+                    className="flex h-full flex-col overflow-hidden rounded-lg bg-[#161b16]"
+                  >
+                    {/* Book Image */}
+                    <div className="relative aspect-[3/4] bg-[#22281f]">
+                      {bookCover ? (
+                        <Image
+                          src={bookCover}
+                          alt={book.title}
+                          fill
+                          sizes="(max-width: 640px) 100vw, 20vw"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <p className="flex h-full items-center justify-center text-sm text-neutral-400">
+                          No cover available
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Book Information */}
+                    <div className="flex flex-1 flex-col gap-2 p-4">
+                      {book.genre && (
+                        <p className="text-xs text-neutral-400">
+                          {book.genre}
+                        </p>
+                      )}
+
+                      <h2 className="text-base font-semibold text-white">
+                        {book.title}
+                      </h2>
+
                       <p className="text-xs text-neutral-400">
-                        {book.genre}
+                        By {book.author}
                       </p>
-                    )}
 
-                    <h2 className="text-base font-semibold text-white">
-                      {book.title}
-                    </h2>
-
-                    <p className="text-xs text-neutral-400">
-                      By {book.author}
-                    </p>
-
-                    {/* Details Button */}
-                    <a
-                      href={`/all-book/${getBookKey(book)}`}
-                      className="mt-auto rounded-md bg-[#7fdb9e] px-4 py-2.5 text-center text-sm font-medium text-[#0b2416] hover:bg-[#a4ecbf]"
-                    >
-                      View Details
-                    </a>
+                      {/* Details Button */}
+                      <a
+                        href={`/all-book/${bookKey}`}
+                        className="mt-auto rounded-md bg-[#7fdb9e] px-4 py-2.5 text-center text-sm font-medium text-[#0b2416] hover:bg-[#a4ecbf]"
+                      >
+                        View Details
+                      </a>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
