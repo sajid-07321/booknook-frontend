@@ -4,6 +4,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { getTokenFromClient } from "@/lib/getTokenFromClient";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type DeleteBookButtonProps = {
   bookId: string;
@@ -39,23 +41,40 @@ export default function DeleteBookButton({
         throw new Error("Failed to delete book");
       }
 
-      window.location.reload();
+      toast.success("Book deleted successfully!", {
+        autoClose: 1500,
+      });
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     } catch (error) {
       console.error(error);
-      alert("Could not delete the book.");
+      toast.error("Could not delete the book.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Button
-      type="button"
-      onClick={handleDelete}
-      disabled={loading}
-      className="bg-red-500/15 text-xs text-red-400 hover:bg-red-500/25"
-    >
-      {loading ? "Deleting..." : "Delete"}
-    </Button>
+    <>
+      <Button
+        type="button"
+        onClick={handleDelete}
+        disabled={loading}
+        className="bg-red-500/15 text-xs text-red-400 hover:bg-red-500/25"
+      >
+        {loading ? "Deleting..." : "Delete"}
+      </Button>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        theme="dark"
+        newestOnTop
+        closeOnClick
+        pauseOnFocusLoss={false}
+      />
+    </>
   );
 }

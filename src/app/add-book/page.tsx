@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +12,8 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { authClient } from "@/lib/auth-client";
 import { getTokenFromClient } from "@/lib/getTokenFromClient";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const categories = [
@@ -32,8 +33,6 @@ export default function AddBookPage() {
   const router = useRouter();
   const { data: session } = authClient.useSession();
   const user = session?.user;
-
-  const [successMessage, setSuccessMessage] = useState("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -72,15 +71,21 @@ export default function AddBookPage() {
       const result = await res.json();
       console.log(result);
 
-      setSuccessMessage(`"${book.title}" has been added to the library.`);
-     
+      toast.success(`"${book.title}" has been added to the library.`, {
+        autoClose: 1500,
+      });
+
       setTimeout(() => {
   router.push("/all-book");
 }, 1500);
       
     } catch (error) {
       console.error(error);
-      setSuccessMessage("Failed to add book.");
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to add book. Please try again."
+      );
     }
   };
 
@@ -268,15 +273,6 @@ export default function AddBookPage() {
                 + Add Book to Library
               </Button>
 
-              {successMessage && (
-                <p
-                  role="status"
-                  className="rounded-lg border border-emerald-400/20 bg-emerald-400/10 p-3 text-center text-sm text-emerald-300"
-                >
-                  ✓ {successMessage}
-                </p>
-              )}
-
               <p className="text-center text-xs text-neutral-500">
                 Fields marked with * are required.
               </p>
@@ -288,6 +284,15 @@ export default function AddBookPage() {
           Manage your collection, one book at a time.
         </p>
       </div>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        theme="dark"
+        newestOnTop
+        closeOnClick
+        pauseOnFocusLoss={false}
+      />
     </main>
   );
 }

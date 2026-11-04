@@ -12,12 +12,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const SignUpPage = () => {
-  const handleSignUp = async (e:React.SubmitEvent<HTMLElement>) => {
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const formData = new FormData(e.target)
+    const formData = new FormData(e.currentTarget)
     const user = Object.fromEntries(formData.entries()) as {name: string, imageUrl: string, email: string, password: string} 
    
 
@@ -25,19 +27,24 @@ const SignUpPage = () => {
       ...user,
     })
     if(data) {
+      toast.success("Account created successfully! Redirecting...")
       redirect('/')
     }
     if(error) {
-      console.error(error)
+      toast.error(error.message || "Sign up failed. Please try again.")
     }
   }
   
     const handleGoogleSignUp = async () => {
-      const data = await authClient.signIn.social({
+      const {data, error} = await authClient.signIn.social({
     provider: "google",
   });
-  console.log(data);
-  
+  if(data) {
+    toast.info("Redirecting to Google sign up...")
+  }
+  if(error) {
+    toast.error(error.message || "Google sign up failed. Please try again.")
+  }
     }
 
   return (
@@ -157,6 +164,14 @@ const SignUpPage = () => {
           </form>
         </CardContent>
       </Card>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        theme="dark"
+        newestOnTop
+        closeOnClick
+        pauseOnFocusLoss={false}
+      />
     </div>
   );
 };

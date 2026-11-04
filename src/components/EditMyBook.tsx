@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import { getTokenFromClient } from "@/lib/getTokenFromClient";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const categories = [
   "Fiction",
@@ -51,8 +53,6 @@ type EditMyBookProps = {
 
 const EditMyBook = ({ book }: EditMyBookProps) => {
   const [open, setOpen] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (
@@ -61,8 +61,6 @@ const EditMyBook = ({ book }: EditMyBookProps) => {
     event.preventDefault();
 
     setLoading(true);
-    setSuccessMessage("");
-    setErrorMessage("");
 
     const formData = new FormData(event.currentTarget);
 
@@ -96,17 +94,17 @@ const EditMyBook = ({ book }: EditMyBookProps) => {
         );
       }
 
-      setSuccessMessage("Book updated successfully!");
+      toast.success("Book updated successfully!");
 
       // Close dialog after successful update
       setTimeout(() => {
         setOpen(false);
         window.location.reload();
-      }, 800);
+      }, 1500);
     } catch (error) {
       console.error("Update error:", error);
 
-      setErrorMessage(
+      toast.error(
         error instanceof Error
           ? error.message
           : "Something went wrong. Please try again."
@@ -121,11 +119,6 @@ const EditMyBook = ({ book }: EditMyBookProps) => {
       open={open}
       onOpenChange={(value) => {
         setOpen(value);
-
-        if (value) {
-          setSuccessMessage("");
-          setErrorMessage("");
-        }
       }}
     >
       <DialogTrigger>
@@ -308,30 +301,20 @@ const EditMyBook = ({ book }: EditMyBookProps) => {
               {loading ? "Updating..." : "Update Book"}
             </Button>
 
-            {successMessage && (
-              <p
-                role="status"
-                className="rounded-md bg-emerald-400/10 p-3 text-center text-sm text-emerald-300"
-              >
-                ✓ {successMessage}
-              </p>
-            )}
-
-            {errorMessage && (
-              <p
-                role="alert"
-                className="rounded-md bg-red-400/10 p-3 text-center text-sm text-red-400"
-              >
-                {errorMessage}
-              </p>
-            )}
-
             <p className="text-center text-xs text-neutral-500">
               Update the fields and click Update Book.
             </p>
           </div>
         </form>
       </DialogContent>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        theme="dark"
+        newestOnTop
+        closeOnClick
+        pauseOnFocusLoss={false}
+      />
     </Dialog>
   );
 };

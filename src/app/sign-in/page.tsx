@@ -12,12 +12,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignInPage = () => {
 
-  const handleSignIn = async (e:React.SubmitEvent<HTMLElement>) => {
+  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      const formData = new FormData(e.target)
+      const formData = new FormData(e.currentTarget)
       const user = Object.fromEntries(formData.entries()) as {email: string, password: string} 
      
   
@@ -25,19 +27,24 @@ const SignInPage = () => {
         ...user,
       })
       if(data) {
+        toast.success("Signed in successfully! Redirecting...")
         redirect('/')
       }
       if(error) {
-        console.error(error)
+        toast.error(error.message || "Invalid email or password.")
       }
     }
 
     const handleGoogleSignIn = async () => {
-      const data = await authClient.signIn.social({
+      const {data, error} = await authClient.signIn.social({
     provider: "google",
   });
-  console.log(data);
-  
+  if(data) {
+    toast.info("Redirecting to Google sign in...")
+  }
+  if(error) {
+    toast.error(error.message || "Google sign in failed. Please try again.")
+  }
     }
 
   return (
@@ -128,6 +135,14 @@ const SignInPage = () => {
           </form>
         </CardContent>
       </Card>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        theme="dark"
+        newestOnTop
+        closeOnClick
+        pauseOnFocusLoss={false}
+      />
     </div>
   );
 };
