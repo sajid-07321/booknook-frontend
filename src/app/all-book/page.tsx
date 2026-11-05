@@ -11,13 +11,12 @@ type Book = {
   image?: string;
 };
 
-const ALL_BOOKS_URL = "http://localhost:5000/all-book";
 
 export default async function AllBookPage() {
   let books: Book[] = [];
 
   try {
-    const res = await fetch(ALL_BOOKS_URL, {
+    const res = await fetch("http://localhost:5000/all-book", {
       cache: "no-store",
     });
 
