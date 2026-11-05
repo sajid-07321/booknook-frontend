@@ -20,9 +20,7 @@ type ApiBook = {
   image?: string;
 };
 
-const BookDetailsPage = async (
-  props: PageProps<"/all-book/[id]">
-) => {
+const BookDetailsPage = async (props: PageProps<"/all-book/[id]">) => {
   const { id } = await props.params;
 
   const token = await getTokenFromServer();
@@ -98,9 +96,7 @@ const BookDetailsPage = async (
               </p>
 
               {book.userEmail && (
-                <p className="text-xs text-neutral-400">
-                  {book.userEmail}
-                </p>
+                <p className="text-xs text-neutral-400">{book.userEmail}</p>
               )}
             </div>
 
@@ -116,8 +112,9 @@ const BookDetailsPage = async (
           {/* Actions */}
           <div className="mt-6 flex items-center gap-4">
             <BorrowBook
-              userName={book.userName}
-              userEmail={book.userEmail}
+              bookId={book._id ?? book.id ?? ""}
+              bookTitle={book.title}
+              copiesLeft={book.totalCopies ?? 0}
             />
 
             <Link

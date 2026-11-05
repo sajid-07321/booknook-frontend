@@ -9,9 +9,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Popover,
   PopoverContent,
-  PopoverDescription,
-  PopoverHeader,
-  PopoverTitle,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "../ui/button";
@@ -22,11 +19,9 @@ const navLinks = [
   { label: "All Books", href: "/all-book" },
   { label: "Add Book", href: "/add-book" },
   { label: "My Books", href: "/my-books" },
-  { label: "My Borrows", href: "/borrows" },
+  { label: "My Borrows", href: "/my-borrow" },
 ];
 
-const greenButton =
-  "rounded-lg bg-[#8ee6b0] px-4 py-2 text-sm font-medium text-[#0b2416] hover:bg-[#a4ecbf]";
 
 export function Navbar() {
   const { data: session } = authClient.useSession();
